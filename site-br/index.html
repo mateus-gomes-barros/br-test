@@ -27,7 +27,84 @@
       </footer>
     </div>
 
+<script>
+    // Verifica o tamanho da tela
+    function isMobile() {
+      return window.innerWidth < 768;
+    }
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      var attempts = 0
+      var elsDisplayed = false
+      var startWatchVideoProgress = function () {
+        if (
+          typeof smartplayer === 'undefined' ||
+          !(smartplayer.instances && smartplayer.instances.length)
+          ) {
+            if (attempts >= 10) return
+            attempts += 1
+            return setTimeout(function () {
+              startWatchVideoProgress()
+            }, 1000)
+          }
+          var container = document.querySelector(".video").style.display = 'block'
+          var videos = document.querySelectorAll('#smartplayer')
+          var company_id = smartplayer.instances[0].options.accountId
+              var videoElement = document.getElementsByClassName("smartplayer-video");
+              console.log(videoElement)
+          videos[1].style.display = 'none'
+            // switch para esconder um video e o outro aparecer (configurado para o video 2 aparecer e o 1 sumir)
+              if (isMobile()) {
+                videos[1].style.display = 'block'
+                videos[0].style.display = 'none'
+              } 
+            }
+            startWatchVideoProgress()
+          })
+    </script>
 
+<!-- script para fullscreen -->
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function () {
+        var attempts = 0;
+    
+        var watchEvents = function () {
+          if (typeof smartplayer === 'undefined' || !(smartplayer.instances && smartplayer.instances.length)) {
+            if (attempts >= 10) return;
+            attempts += 1;
+            return setTimeout(function () { watchEvents() }, 1000);
+          }
+    
+          // inica o fullscreen quando der play
+          let container = document.querySelector(".video")
+          smartplayer.instances[0].on('play', () => {
+            if (smartplayer.instances[0].smartAutoPlay) return;
+            let video = document.querySelector("video")
+            container.style.width = "100%"
+            container.style.scrollBehavior = "smooth"
+            console.log(container.getBoundingClientRect())
+            window.scrollBy({
+              top: container.getBoundingClientRect().y,
+              left: 100,
+              behavior: 'smooth'
+            })
+            // video.style.left = "0"
+          })
+    
+          // cancela o fullscreen quando der pause
+          smartplayer.instances[0].on('pause', () => {
+            console.log(container.scrollHeight)
+            
+            console.log(container.getBoundingClientRect())
+           
+            container.style.width = "50%"
+          })
+        }
+    
+        watchEvents()
+      });
+    </script>
+    <!-- Fim do script para fullScreen -->
     
   </body>
   
